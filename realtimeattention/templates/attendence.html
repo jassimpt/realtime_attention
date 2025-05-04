@@ -1,0 +1,186 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<title> Dashboard</title>
+	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+	{% load static %}
+	<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+	<link rel="stylesheet" href="{% static 'assets/css/ready.css' %}">
+	<link rel="stylesheet" href="{% static 'assets/css/demo.css' %}">
+</head>
+<body>
+	<div class="wrapper">
+		<div class="main-header">
+			<div class="logo-header">
+				<a href="{% url 'admin_home' %}" class="logo">
+					Dashboard
+				</a>
+				<button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<button class="topbar-toggler more"><i class="la la-ellipsis-v"></i></button>
+			</div>
+			<nav class="navbar navbar-header navbar-expand-lg">
+				<div class="container-fluid">
+					
+					<form class="navbar-left navbar-form nav-search mr-md-3" action="">
+						<div class="input-group">
+							<input type="text" placeholder="Search ..." class="form-control">
+							<div class="input-group-append">
+								<span class="input-group-text">
+									<i class="la la-search search-icon"></i>
+								</span>
+							</div>
+						</div>
+					</form>
+					<ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
+						<li class="nav-item dropdown">
+							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="" aria-expanded="false"> <img src="{% static 'assets/img/profile.jpg' %}"  alt="user-img" width="36" class="img-circle"><span >Admin</span></span> </a>
+							<ul class="dropdown-menu dropdown-user">
+								<li>
+									<div class="user-box">
+										<div class="u-img"><img src="{% static 'assets/img/profile.jpg' %}" alt="user"></div>
+										<div class="u-text">
+											<h4>{{ user.username }}</h4>
+											<p class="text-muted">{{ user.email }}</p></div>
+										</div>
+									</li>
+									<div class="dropdown-divider"></div>
+									<a class="dropdown-item" href="{% url 'admin_logout' %}"><i class="fa fa-power-off"></i> Logout</a>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</nav>
+			</div>
+			<div class="sidebar">
+				<div class="scrollbar-inner sidebar-wrapper">
+					<div class="user">
+						<div class="photo">
+							<img src="{% static 'assets/img/profile.jpg' %}">
+						</div>
+						<div class="info">
+							<a class="" data-toggle="collapse" href="#collapseExample" aria-expanded="true">
+								<span>
+									<span class="user-name">{{ user.username }}</span>
+									<span class="user-name">{{ user.email }}</span>
+									<span class="user-level">Administrator</span>
+									<span class="caret"></span>
+								</span>
+							</a>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+					<ul class="nav">
+						<li class="nav-item active">
+							<a href="{% url 'admin_home' %}">
+								<i class="la la-dashboard"></i>
+								<p>Dashboard</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="{% url 'list_student' %}">
+								<i class="la la-th"></i>
+								<p>Students</p>
+							</a>
+						</li>
+                        <li class="nav-item">
+							<a href="{% url 'list_attendence' %}">
+								<i class="la la-th"></i>
+								<p>Attendance </p>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="main-panel">
+				<div class="content">
+					<div class="container-fluid">
+						<h4 class="page-title">Students Attendance </h4>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="card">
+									<div class="card-header">
+										<div class="card-title">Attendance Table</div>
+									</div>
+									<div class="card-body">
+										<table class="table table-hover">
+											<thead>
+												<tr>
+													<th scope="col">#</th>
+													<th>Date</th>
+													<th>Status</th>
+													<th>Inattentive Count</th>
+													<th>Snapshot</th>
+												</tr>
+											</thead>
+											<tbody>
+												{% for entry in summary %}
+												<tr>
+													<td>{{ forloop.counter }}</td>
+													<td>{{ entry.date }}</td>
+													<td>
+														{% if entry.status == "Present" %}
+															<span class="badge bg-success">{{ entry.status }}</span>
+														{% elif entry.status == "Inattentive" %}
+															<span class="badge bg-warning text-dark">{{ entry.status }}</span>
+														{% endif %}
+													</td>
+													<td>{{ entry.inattentive_count }}</td>
+													<td>
+														{% if entry.image %}
+															<img src="{{ entry.image }}" alt="Snapshot" width="60" class="rounded">
+														{% else %}
+															-
+														{% endif %}
+													</td>
+												</tr>
+												{% empty %}
+												<tr>
+													<td colspan="4" class="text-center">No students found.</td>
+												</tr>
+												{% endfor %}
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+				<footer class="footer">
+					<div class="container-fluid">
+						<nav class="pull-left">
+							<ul class="nav">
+								<li class="nav-item">
+									<a class="nav-link" href="#">
+										Help
+									</a>
+								</li>
+							</ul>
+						</nav>
+					</div>
+				</footer>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+<script src="{% static 'assets/js/core/jquery.3.2.1.min.js' %}"></script>
+<script src="{% static 'assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js' %}"></script>
+<script src="{% static 'assets/js/core/popper.min.js' %}"></script>
+<script src="{% static 'assets/js/core/bootstrap.min.js' %}"></script>
+<script src="{% static 'assets/js/plugin/chartist/chartist.min.js' %}"></script>
+<script src="{% static 'assets/js/plugin/chartist/plugin/chartist-plugin-tooltip.min.js' %}"></script>
+<script src="{% static 'assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js' %}"></script>
+<script src="{% static 'assets/js/plugin/bootstrap-toggle/bootstrap-toggle.min.js' %}"></script>
+<script src="{% static 'assets/js/plugin/jquery-mapael/jquery.mapael.min.js' %}"></script>
+<script src="{% static 'assets/js/plugin/jquery-mapael/maps/world_countries.min.js' %}"></script>
+<script src="{% static 'assets/js/plugin/chart-circle/circles.min.js' %}"></script>
+<script src="{% static 'assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js' %}"></script>
+<script src="{% static 'assets/js/ready.min.js' %}"></script>
+</html>

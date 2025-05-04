@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register Page</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #004d4d, #0e5956);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1000px;
+      background-color: #ffffff10;
+      display: flex;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+    }
+
+    .left-panel {
+      flex: 1;
+      background: #013634;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .right-panel {
+      flex: 1.2;
+      background-color: #ffffff15;
+      padding: 50px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .top-links {
+      text-align: right;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .top-links a {
+      color: #ffffff;
+      font-weight: bold;
+      text-decoration: underline;
+      transition: color 0.3s;
+    }
+
+    .top-links a:hover {
+      color: #00e0b4;
+    }
+
+    h2 {
+      margin-bottom: 30px;
+      font-size: 26px;
+      font-weight: 600;
+    }
+
+    form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    input[type="text"],
+    input[type="email"] {
+      padding: 14px;
+      border-radius: 8px;
+      border: none;
+      width: 100%;
+      font-size: 14px;
+      background: #fff;
+      transition: 0.3s;
+    }
+
+    input::placeholder {
+      color: #555;
+    }
+
+    input:focus {
+      outline: 2px solid #00e0b4;
+      background-color: #f0f0f0;
+    }
+
+    .input-wrapper {
+      position: relative;
+      width: 48%;
+    }
+
+    .full-width {
+      width: 100%;
+    }
+
+    .create-btn {
+      background: linear-gradient(to right, #00e0b4, #00c7a4);
+      color: #003f3c;
+      border: none;
+      padding: 14px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+      box-shadow: 0 4px 15px rgba(0, 224, 180, 0.3);
+    }
+
+    .create-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 224, 180, 0.5);
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        border-radius: 0;
+        margin-top: 20px;
+      }
+
+      .left-panel {
+        font-size: 22px;
+        padding: 30px 20px;
+      }
+
+      .right-panel {
+        padding: 30px 20px;
+      }
+
+      .input-wrapper {
+        width: 100%;
+      }
+
+      .top-links {
+        text-align: center;
+        margin-bottom: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="left-panel">
+      Let’s Make it Happen Together!
+    </div>
+    <div class="right-panel">
+      <div class="top-links">
+        Already have an account? <a href="#">Sign in here!</a>
+      </div>
+      <h2>Create An Account</h2>
+      <form action="/student_register_post" method="post">
+        <div class="input-wrapper">
+          <input type="text" name="name" placeholder="👤 Your Name" required>
+        </div>
+        <div class="input-wrapper">
+          <input type="email" name="email" placeholder="📧 Email Address" required>
+        </div>
+        <div class="input-wrapper">
+          <input type="text" name="phone" placeholder="📱 Phone Number" required>
+        </div>
+        <div class="full-width">
+          <button class="create-btn" type="submit">✨ Create Account</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
+

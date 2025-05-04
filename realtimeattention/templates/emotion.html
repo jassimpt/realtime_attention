@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>Emotion Table</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #e0f7fa, #f4f4f9);
+      padding: 30px;
+      margin: 0;
+    }
+
+    table {
+      width: 90%;
+      max-width: 1100px;
+      margin: 40px auto;
+      border-collapse: separate;
+      border-spacing: 0;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    }
+
+    thead {
+      background-color: rgba(26, 188, 156, 0.85);
+    }
+
+    th, td {
+      padding: 14px 16px;
+      text-align: center;
+      font-size: 15px;
+      color: #333;
+    }
+
+    th {
+      color: #ffffff;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: rgba(255, 255, 255, 0.5);
+    }
+
+    tbody tr:hover {
+      background-color: rgba(173, 216, 230, 0.2);
+      transition: 0.3s ease;
+    }
+
+    @media screen and (max-width: 768px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+
+      thead {
+        display: none;
+      }
+
+      tr {
+        margin-bottom: 15px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      }
+
+      td {
+        position: relative;
+        padding-left: 50%;
+        text-align: left;
+        border-bottom: 1px solid #eee;
+      }
+
+      td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 15px;
+        font-weight: bold;
+        color: #1abc9c;
+        text-transform: capitalize;
+      }
+    }
+  </style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+</head>
+
+<body>
+  <table>
+    <thead>
+      <tr>
+        <th>SI No</th>
+        <th>Date</th>
+        <th>Student ID</th>
+        <th>Emotion</th>
+        <th>Emotion Score</th>
+        <th>Up</th>
+        <th>Down</th>
+        <th>Left</th>
+        <th>Right</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in data %}
+      <tr>
+        <td data-label="SI No">{{ forloop.counter }}</td>
+        <td data-label="Date">{{ i.Date }}</td>
+        <td data-label="Student ID">{{ i.student_id.id }}</td>
+        <td data-label="Emotion">{{ i.emotion }}</td>
+        <td data-label="Emotion Score">{{ i.emotion_score }}</td>
+        <td data-label="Up">{{ i.movementup }}</td>
+        <td data-label="Down">{{ i.movementdown }}</td>
+        <td data-label="Left">{{ i.movementleft }}</td>
+        <td data-label="Right">{{ i.movementright }}</td>
+      </tr>
+      {% endfor %}
+
+    </tbody>
+  </table>
+<canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+
+<script>
+const xValues = [];
+const yValues = [];
+{% for i in data %}
+    xValues.push('{{ i.Date }}')
+    yValues.push({{ i.s }})
+{% endfor %}
+new Chart("myChart", {
+  type: "line",
+  data: {
+    labels: xValues,
+    datasets: [{
+      fill: false,
+      lineTension: 0,
+      backgroundColor: "rgba(0,0,255,1.0)",
+      borderColor: "rgba(0,0,255,0.1)",
+      data: yValues
+    }]
+  },
+  options: {
+    title: {
+      display: true,
+      text: "Sample Line Chart"
+    },
+    legend: {
+      display: false
+    },
+    scales: {
+      yAxes: [{
+        ticks: { min: 0, max: 100 },
+        scaleLabel: {
+          display: true,
+          labelString: "Score"
+        }
+      }],
+      xAxes: [{
+        scaleLabel: {
+          display: true,
+          labelString: "Date"
+        }
+      }]
+    }
+  }
+});
+</script>
+</body>
+</html>
+

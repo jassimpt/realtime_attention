@@ -1,0 +1,17 @@
+<!-- templates/tracker/index.html -->
+<html>
+<head>
+    <title>Real-Time AI Tracker</title>
+</head>
+<body>
+    <h2>Real-Time Emotion & Attention Tracking</h2>
+    <button onclick="startCam()">Start Cam</button>
+    <div><img id="video" width="640" height="480"/></div>
+
+    <script>
+        function startCam() {
+            document.getElementById('video').src = "{% url 'video_feed' %}";
+        }
+    </script>
+</body>
+</html>

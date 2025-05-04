@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 30px auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .dashboard-header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 24px;
+            color: #6a11cb;
+        }
+        .dashboard-content {
+            padding: 30px;
+        }
+        .dashboard-section {
+            margin-bottom: 30px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+        }
+        .section-header {
+            color: #6a11cb;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            border: none;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(106, 17, 203, 0.4);
+        }
+        .attendance-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .attendance-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        .card-icon {
+            font-size: 36px;
+            margin-bottom: 15px;
+            color: #6a11cb;
+        }
+        .profile-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .info-item {
+            margin-bottom: 15px;
+        }
+        .info-label {
+            font-weight: bold;
+            color: #6c757d;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .info-value {
+            font-size: 16px;
+        }
+        .table th {
+            color: #6a11cb;
+        }
+        .camera-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #cameraFeed {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 8px;
+            border: 3px solid #6a11cb;
+            margin-bottom: 20px;
+        }
+        .attendance-status {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .status-icon {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+        .status-success {
+            color: #28a745;
+        }
+        .status-pending {
+            color: #ffc107;
+        }
+        .attendance-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .nav-tabs .nav-link {
+            color: #6c757d;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 0;
+            font-weight: 500;
+            position: relative;
+        }
+        .nav-tabs .nav-link.active {
+            color: #6a11cb;
+            background-color: transparent;
+            border-bottom: 3px solid #6a11cb;
+        }
+        .tab-content {
+            padding: 20px 0;
+        }
+        .stat-card {
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            background: white;
+        }
+        .stat-number {
+            font-size: 30px;
+            font-weight: bold;
+            color: #6a11cb;
+        }
+        .stat-label {
+            color: #6c757d;
+        }
+        .logout-btn {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        .logout-btn i {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <div>
+                    <h4 class="mb-0">Welcome, <span id="studentName">{{ student.name }}</span></h4>
+                    <small>Student ID: <span id="studentId"> ST - {{ student.id }}</span></small>
+                </div>
+            </div>
+            <a href="{% url 'student_logout' %}" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+
+        <div class="dashboard-content">
+            <ul class="nav nav-tabs" id="dashboardTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="true">
+                        <i class="fas fa-user me-2"></i>Profile
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="attendance-tab" data-bs-toggle="tab" data-bs-target="#attendance" type="button" role="tab" aria-controls="attendance" aria-selected="false">
+                        <i class="fas fa-camera me-2"></i>Attendance
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="history-tab" data-bs-toggle="tab" data-bs-target="#history" type="button" role="tab" aria-controls="history" aria-selected="false">
+                        <i class="fas fa-history me-2"></i>Attendance History
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="dashboardTabContent">
+                <!-- Profile Tab -->
+                <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <div class="dashboard-section">
+                        <div class="section-header">
+                            <h4><i class="fas fa-user-circle me-2"></i>Student Details</h4>
+                            <!-- <button class="btn btn-sm btn-primary">
+                                <i class="fas fa-edit me-1"></i>Edit Profile
+                            </button> -->
+                        </div>
+                        <div class="profile-info">
+                            <div class="info-item">
+                                <span class="info-label">Full Name</span>
+                                <span class="info-value" id="fullName">{{ student.name }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Email Address</span>
+                                <span class="info-value" id="emailAddress">{{ student.email }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Phone Number</span>
+                                <span class="info-value" id="phoneNumber">{{ student.phone_number }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Student ID</span>
+                                <span class="info-value" id="studentIdProfile">ST - {{ student.id }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Attendance Tab (Camera) -->
+                <div class="tab-pane fade" id="attendance" role="tabpanel" aria-labelledby="attendance-tab">
+                    <div class="dashboard-section">
+                        <div class="section-header">
+                            <h4><i class="fas fa-camera me-2"></i>Attendance</h4>
+                        </div>
+                        <div class="camera-container">
+                            <p class="text-center mb-3">Please ensure your face is clearly visible in the camera</p>
+                        
+                            <!-- Initially hidden camera feed -->
+                            <img id="cameraFeed" src="" style="width:100%; max-width:500px; display:none;" />
+                        
+                            <!-- Hidden at first, shown after verification -->
+                            <div class="attendance-status" id="attendanceStatus" style="display: none;">
+                                <i class="fas fa-check-circle status-icon status-success"></i>
+                                Face recognized! Marking attendance...
+                            </div>
+                        
+                            <div class="attendance-actions">
+                                <button class="btn btn-primary" id="startCamera">
+                                    <i class="fas fa-video me-2"></i>Start Camera
+                                </button>
+                                <button class="btn btn-secondary" id="stopCamera" disabled>
+                                    <i class="fas fa-stop-circle me-2"></i>Stop Camera
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Attendance History Tab -->
+                <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab">
+                    <div class="dashboard-section">
+                        <div class="section-header">
+                            <h4><i class="fas fa-history me-2"></i>Attendance History</h4>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                        <th>Inattentive Count</th>
+                                        <th>Snapshot</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for entry in summary %}
+                                    <tr>
+                                        <td>{{ entry.date }}</td>
+                                        <td>
+                                            {% if entry.status == "Present" %}
+                                                <span class="badge bg-success">{{ entry.status }}</span>
+                                            {% elif entry.status == "Inattentive" %}
+                                                <span class="badge bg-warning text-dark">{{ entry.status }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ entry.inattentive_count }}</td>
+                                        <td>
+                                            {% if entry.image %}
+                                                <img src="{{ entry.image }}" alt="Snapshot" width="60" class="rounded">
+                                            {% else %}
+                                                -
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+    <script>
+        const startButton = document.getElementById('startCamera');
+        const stopButton = document.getElementById('stopCamera');
+        const cameraFeed = document.getElementById('cameraFeed');
+        const attendancetatus = document.getElementById('attendanceStatus');
+
+    
+        startButton.addEventListener('click', function () {
+            cameraFeed.src = "/video_feed/";
+            cameraFeed.style.display = "block";
+            startButton.disabled = true;
+            stopButton.disabled = false;
+            attendancetatus.style.display = "block";
+        });
+    
+        stopButton.addEventListener('click', function () {
+            fetch('/stop_video_feed/')
+                .then(res => res.json())
+                .then(data => {
+                    cameraFeed.src = "";
+                    cameraFeed.style.display = "none";
+                    startButton.disabled = false;
+                    stopButton.disabled = true;
+                    attendancetatus.style.display = "none";
+                })
+                .catch(err => {
+                    console.error("Failed to stop camera:", err);
+                });
+        });
+    </script>
+</body>
+</html>
